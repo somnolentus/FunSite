@@ -1,0 +1,52 @@
+{% extends 'flatpages/default.html' %}
+{% block title %}
+Объявление
+{% endblock title %}
+
+{% block content %}
+    {% if advertisment %}
+        Заголовок: {{ advertisment.heading }} <br>
+        Время создания: {{ advertisment.time_create|date:'d-m-y H:i' }} <br>
+        Содержимое: {{ advertisment.body|safe }} <br>
+        {% if not is_author %}
+            <a href="{% url 'comment_create' advertisment.id %}">Добавить отклик</a>
+        {% endif %}
+        <hr>
+    {% else %}
+        <h2>Такой статьи нет!</h2>
+    {% endif %}
+    <hr>
+    <b>Отклики на объявления</b>
+    {% if num_comments > 0 %}
+        <hr>
+            <form method="GET">
+                {{ filter.form}}
+                <input type="submit" value="Найти">
+                <a href="{% url 'advertisment' advertisment.id %}"> Сбросить фильтр </a>
+            </form>
+        <br>
+    {% endif%}
+    {% if comments %}
+        {% for comment in comments %}
+            {% if not comment.hidden or comment.hidden and is_author %}
+                <hr>
+                Отклик # {{ comment.pk }} <br>
+                {% if is_author %} <!-- подсвечиваем статус для автора-->
+                    {% if comment.hidden %}
+                        <strong> Отклик скрыт </strong>
+                        <a href="{% url 'comment_accept' comment.id %}">| Принять отклик |</a>
+                    {% endif %}
+                        <a href="{% url 'comment_delete' comment.id %}">Удалить отклик</a>
+                        <br>
+                {% endif %}
+                Создан: {{ comment.time_create|date:'d-m-y H:i' }}<br>
+                Пользователь: {{ comment.user }}<br>
+                Комментарий: {{ comment.comment }}<br>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h2>Откликов нет!</h2>
+
+    {% endif %}
+{% endblock content %}
+

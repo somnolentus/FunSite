@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Пользователь {% endblock title %}
+
+{% block content %}
+    <h3>Профиль пользователя</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Сохранить">
+    </form>
+{% endblock content %}

@@ -1,0 +1,7 @@
+{% extends "flatpages/default.html" %}
+
+{% block content %}
+    Страница авторизованного пользователя {{request.user.username}}
+    <br>
+    <a href="{% url 'profile' request.user.id %}"><u>Редактировать профиль</u></a>
+{% endblock %}

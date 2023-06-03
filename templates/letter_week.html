@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{% block content %}
+    <h2>Новые объявления за неделю на твоём любимом сайте!</h2>
+    <hr>
+    {% for item in advertisments %}
+        <p>Заголовок - {{item.heading}} </p>
+        <p>Содержание - {{item.body|truncatechars:50}} </p>
+        <a href="{{ item.url_for_letter }}">Ссылка на объявление</a>
+        <hr>
+    {% endfor %}
+{% endblock content %}
+</body>
+</html>

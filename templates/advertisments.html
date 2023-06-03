@@ -1,0 +1,38 @@
+{% extends 'flatpages/default.html' %}
+{% block title %}
+Объявления
+{% endblock title %}
+
+{% block content %}
+    <h2>Все объявления (общее количество {{ advertisments|length }})</h2>
+    {% if user.is_authenticated %}
+        <a href="{% url 'advertisment_create' %}">Новое объявление </a>
+        {% if is_subscriber %}
+            <a href="{% url 'subscribe' %}">| Отписаться от рассылки </a>
+        {% else %}
+            <a href="{% url 'subscribe' %}">| Подписаться на рассылку </a>
+        {% endif %}
+    {% endif %}
+    {% if advertisments %}
+        <hr>
+        <form method="GET">
+            {{ filter.form}}
+            <input type="submit" value="Найти">
+            <a href="{% url 'advertisments' %}"> Сбросить фильтр </a>
+        </form>
+        <br>
+        {% for advertisment in advertisments %}
+            Автор: {{ advertisment.user }} <br>
+            Категория: {{ advertisment.category }} <br>
+            Заголовок: <a href="{% url 'advertisment' advertisment.id %}">{{ advertisment.heading  }}</a> <br>
+            Дата создания: {{ advertisment.time_create|date:'d-m-y H:i' }} <br>
+            Содержимое: {{ advertisment.body|safe}} <br>
+            {% if advertisment.user == user%}
+                <a href="{% url 'advertisment_update' advertisment.id %}"><u>Редактировать</u></a>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    {% else %}
+        <h2>Объявлений нет!</h2>
+    {% endif %}
+{% endblock content %}

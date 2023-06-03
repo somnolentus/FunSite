@@ -1,0 +1,31 @@
+{% extends 'flatpages/default.html' %}
+{% block content %}
+{% if not user.is_authenticated %}
+<div>
+<h1>Регистрация</h1>
+    <div>
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+              {{ field.label_tag }}<br>
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+              {% endfor %}
+              {{ field }}
+              {% if field.help_text %}
+              <span>{{ field.help_text }}</span>
+              {% endif %}
+
+            </p>
+            {% endfor %}
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<h1>Вы уже зарегистрированы!</h1>
+<h5>Чтобы зарегистрировать новый аккаунт, выйдете из текущего.</h5>
+{% endif %}
+
+{% endblock %}
